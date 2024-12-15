@@ -1,14 +1,16 @@
+#Upload packages and data
 library(ggplot2)
 
-df <- read.csv("C:/Users/eelai/OneDrive/Documents/listings.csv")
+df <- read.csv("C:/Users/scheu/Downloads/listings.csv")
 head(df)
 
-df$price <- as.numeric(gsub("[$,]", "", df$price))
-filtered_df <- df[df$price != "", ]
-filtered_df <- filtered_df[filtered_df$price < 100000, ]
-cleaned_data <- filtered_df[rowSums(is.na(filtered_df)) < ncol(filtered_df), ]
+#Clean the database
+df$price <- as.numeric(gsub("[$,]", "", df$price)) #remove the $ symbol in the price column
+df <- df[df$price != "", ] #remove airbnb with no price repertoried
+df <- df[df$price < 100000, ] #remove airbnb with price greater than 100000
+df <- df[rowSums(is.na(df)) < ncol(df), ] 
 
-# Fonction de calcul de la distance haversine
+#Distance calculation function (Haversine formula)
 haversine_distance <- function(lat1, lon1, lat2, lon2, R = 6371) {
   to_radians <- function(degrees) degrees * pi / 180
   lat1 <- to_radians(lat1)
@@ -25,38 +27,38 @@ haversine_distance <- function(lat1, lon1, lat2, lon2, R = 6371) {
   return(d)
 }
 
-# Créer un dataframe pour les sites touristiques
+# Create at dataframe for every important touristic spot in Tokyo
 name <- c("Shinjuku Golden Gai", "Senso-ji Temple", "Meiji Jingu Shrine", "teamLab Planets", 
           "Tokyo Skytree", "Tokyo Tower", "Ueno Park", "Ginza Station", "Akihabara Station", 
-          "Shibuya Crossing", "Tokyo National Museum", "Tokyo Metropolitan Government Buildings")
+          "Shibuya Crossing", "Tokyo National Museum", "Tokyo Metropolitan Government Buildings") #vector for the names
 latitude <- c(35.4138, 35.4252, 35.4034, 35.6485, 35.4236, 35.3931, 35.4244, 35.4016, 
-              35.4154, 35.3934, 35.4308, 35.4123)
+              35.4154, 35.3934, 35.4308, 35.4123) #vector for the latitude
 longitude <- c(139.4217, 139.4748, 139.4157, 139.7899, 139.4839, 139.4444, 139.4616, 
-               139.4554, 139.4623, 139.4202, 139.4633, 139.4132)
+               139.4554, 139.4623, 139.4202, 139.4633, 139.4132) #vector for the longitude
 
-tourist <- data.frame(name, latitude, longitude)
-
-# Créer un dataframe pour les appartements
-geo_appartements <- data.frame(
-  id = cleaned_data$id,
-  latitude = cleaned_data$latitude,
-  longitude = cleaned_data$longitude
-)
+tourist <- data.frame(name, latitude, longitude) #combined vectors
 
 # Calculer les distances pour chaque appartement et chaque site touristique
-for (i in 1:nrow(cleaned_data)) {
+for (i in 1:nrow(df)) {
   for (j in 1:nrow(tourist)) {
     col_name <- paste0("distance_to_", gsub(" ", "_", tourist$name[j]))  # Créer un nom de colonne dynamique
     # Calculer la distance pour cet appartement et ce site
-    cleaned_data[i, col_name] <- haversine_distance(
-      lat1 = cleaned_data$latitude[i],
-      lon1 = cleaned_data$longitude[i],
+    df[i, col_name] <- haversine_distance(
+      lat1 = df$latitude[i],
+      lon1 = df$longitude[i],
       lat2 = tourist$latitude[j],
       lon2 = tourist$longitude[j]
     )
   }
 }
 
+# Create a new dataframe for the regression
+db <- cbind(
+  df[c("price")],                      # Correctly reference the columns by name
+  df[, tail(names(df), 12)],                   # Add the last 12 columns from df
+  df[, c("room_type", "bedrooms", "review_scores_rating", 
+         "minimum_nights", "availability_365")]  # Correctly reference the additional columns
+)
 
 
 
