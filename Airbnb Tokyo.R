@@ -52,12 +52,11 @@ for (i in 1:nrow(df)) {
   }
 }
 
-# Create a new dataframe for the regression
 db <- cbind(
-  df[c("price")],                      # Correctly reference the columns by name
-  df[, tail(names(df), 12)],                   # Add the last 12 columns from df
+  df[, c("id", "neighbourhood_cleansed", "price")],                      # Correctly reference the columns by name
+  df[, tail(names(df), 12)],                                             # Add the last 12 distance columns
   df[, c("room_type", "bedrooms", "review_scores_rating", 
-         "minimum_nights", "availability_365")]  # Correctly reference the additional columns
+         "minimum_nights", "availability_365")]                           # Correctly reference the additional columns
 )
 
 
