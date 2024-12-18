@@ -123,7 +123,7 @@ stargazer(ols, log_ols, type = "text", align = TRUE) # Comparison
 alias(log_ols)
 dwtest(log_ols)
 bptest(log_ols)
-coeftest(log_ols, vcov = vcovHC(log_ols, type = "HC1"))
+white_ols <- coeftest(log_ols, vcov = vcovHC(log_ols, type = "HC1"))
 
 stargazer(log_ols, white_ols, type = "text", align = TRUE) # Comparison
 
@@ -131,7 +131,7 @@ stargazer(log_ols, white_ols, type = "text", align = TRUE) # Comparison
 #Tokyo Metropolitan Government Buildings / Shinjuku Golden Gai /
 
 db1 <- filter(db, neighbourhood_cleansed == "Shinjuku Ku")
-m1 <- lm(log(price)~distance_to_Shinjuku_Golden_Gai+distance_to_Tokyo_Metropolitan_Government_Buildings+bedrooms, data = db1)
+m1 <- lm(log(price)~distance_to_Shinjuku_Golden_Gai+distance_to_Tokyo_Metropolitan_Government_Buildings+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db1)
 bptest(m1)
 coeftest(m1, vcov = vcovHC(m1, type = "HC1"))
 
@@ -140,7 +140,7 @@ coeftest(m1, vcov = vcovHC(m1, type = "HC1"))
 #Senso-ji Temple / Ueno Park / Tokyo National Museum
 
 db2 <- filter(db, neighbourhood_cleansed == "Taito Ku")
-m2 <- lm(log(db2$price)~db2$`distance_to_Senso-ji_Temple`+db2$distance_to_Ueno_Park+db2$distance_to_Tokyo_National_Museum+db2$bedrooms)
+m2 <- lm(log(db2$price)~db2$`distance_to_Senso-ji_Temple`+distance_to_Ueno_Park+distance_to_Tokyo_National_Museum+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db2)
 bptest(m2)
 coeftest(m2, vcov = vcovHC(m2, type = "HC1"))
 
@@ -149,21 +149,21 @@ coeftest(m2, vcov = vcovHC(m2, type = "HC1"))
 #Meiji Jingu Shrine / Shibuya Crossing
 
 db3 <- filter(db, neighbourhood_cleansed == "Shibuya Ku")
-m3 <- lm(log(db3$price)~db3$distance_to_Meiji_Jingu_Shrine+db3$bedrooms)
+m3 <- lm(log(db3$price)~distance_to_Meiji_Jingu_Shrine+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db3)
 bptest(m3)
 coeftest(m3, vcov = vcovHC(m3, type = "HC1"))
 ###Koto Ku###
 #teamLab Planets
 
 db4 <- filter(db, neighbourhood_cleansed == "Koto Ku")
-m4 <- lm(log(db4$price)~db4$distance_to_teamLab_Planets+db4$bedrooms)
+m4 <- lm(log(db4$price)~distance_to_teamLab_Planets+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db4)
 bptest(m4)
 coeftest(m4, vcov = vcovHC(m4, type = "HC1"))
 ###Sumida Ku###
 #Tokyo Skytree
 
 db5 <- filter(db, neighbourhood_cleansed == "Sumida Ku")
-m5 <- lm(log(db5$price)~db5$distance_to_Tokyo_Skytree+db5$bedrooms)
+m5 <- lm(log(db5$price)~distance_to_Tokyo_Skytree+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db5)
 bptest(m5)
 coeftest(m5, vcov = vcovHC(m5, type = "HC1"))
 
@@ -171,21 +171,21 @@ coeftest(m5, vcov = vcovHC(m5, type = "HC1"))
 #Tokyo Tower
 
 db6 <- filter(db, neighbourhood_cleansed == "Minato Ku")
-m6 <- lm(log(db6$price)~db6$distance_to_Tokyo_Tower+db6$bedrooms)
+m6 <- lm(log(db6$price)~distance_to_Tokyo_Tower+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db6)
 bptest(m6)
 coeftest(m6, vcov = vcovHC(m6, type = "HC1"))
 ###Chuo Ku###
 #Ginza Station
 
 db7 <- filter(db, neighbourhood_cleansed == "Chuo Ku")
-m7 <- lm(log(db7$price)~db7$distance_to_Ginza_Station+db7$bedrooms)
+m7 <- lm(log(db7$price)~distance_to_Ginza_Station+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db7)
 bptest(m7)
 coeftest(m7, vcov = vcovHC(m7, type = "HC1"))
 ###Chiyoda Ku###
 #Akihabara Station
 
 db8 <- filter(db, neighbourhood_cleansed == "Chiyoda Ku")
-m8 <- lm(log(db8$price)~db8$distance_to_Akihabara_Station+db8$bedrooms)
+m8 <- lm(log(db8$price)~distance_to_Akihabara_Station+TV+View+Self_check_in+bedrooms+review_scores_rating+minimum_nights, data = db8)
 bptest(m8)
 coeftest(m8, vcov = vcovHC(m8, type = "HC1"))
 
