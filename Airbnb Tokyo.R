@@ -124,7 +124,9 @@ alias(log_ols)
 dwtest(log_ols)
 bptest(log_ols)
 coeftest(log_ols, vcov = vcovHC(log_ols, type = "HC1"))
-              
+
+stargazer(log_ols, white_ols, type = "text", align = TRUE) # Comparison
+
 ###Shinjuku Ku###
 #Tokyo Metropolitan Government Buildings / Shinjuku Golden Gai /
 
