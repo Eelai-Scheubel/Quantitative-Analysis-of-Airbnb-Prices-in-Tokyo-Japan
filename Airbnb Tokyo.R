@@ -2,7 +2,7 @@
 library(ggplot2)
 library(dplyr)
 library(stringr)
-libeary(stargazer)
+library(stargazer)
 
 df <- read.csv("C:/Users/scheu/Downloads/listings.csv")
 head(df)
@@ -63,7 +63,7 @@ df <- mutate(df,Self_check_in = ifelse(str_detect(amenities, "Self check-in"), 1
 
 db <- cbind(
   df[, c("id", "neighbourhood_cleansed", "price")],                      # Correctly reference the columns by name
-  df[, tail(names(df), 16)],                                             # Add the last 12 distance columns
+  df[, tail(names(df), 15)],                                             # Add the last 12 distance columns
   df[, c("room_type", "bedrooms", "review_scores_rating", 
          "minimum_nights", "availability_365")]                           # Correctly reference the additional columns
 )
@@ -72,8 +72,6 @@ db <- cbind(
 #-----------------------------------------------------
 #------------------ DESCRIPTIVES ---------------------
 summary(db)
-
-library(stargazer)
 
 names(db)
 
