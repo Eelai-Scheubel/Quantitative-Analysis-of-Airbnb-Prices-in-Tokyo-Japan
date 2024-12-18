@@ -122,7 +122,7 @@ stargazer(db,
           title = "Table: Descriptive statistics of some variables")
 
 # Compute the correlation coefficients
-corr.matrix <- round(cor(db), 2)
+corr.matrix <- round(cor(db[,3:21]), 2)
 
 # Simple linear regression
 ols <- lm(price ~ ., data = db)
