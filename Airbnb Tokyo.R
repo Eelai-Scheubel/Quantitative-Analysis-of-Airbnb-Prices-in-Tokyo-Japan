@@ -98,7 +98,7 @@ df <- mutate(df,Self_check_in = ifelse(str_detect(amenities, "Self check-in"), 1
 
 # Cleaned database
 db <- cbind(
-  price = df[["price"]],
+  df[, c("id", "neighbourhood_cleansed", "price")],
   df[, tail(names(df), 15)],
   df[, c("bedrooms", "review_scores_rating", "minimum_nights")]
 )
