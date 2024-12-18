@@ -2,20 +2,7 @@
   
 #df : Base de données originale 
 #db : Base de donnée nettoyée pour l’analyse
-# : 
-#yestab : Année de création de l'entreprise
-#pertot : Nombre total d'employés
-#enggrad : Part des ingénieurs et diplômés
-#sales : Chiffre d'affaires total
-#va : Valeur ajoutée
-#gom : Marge brute d'exploitation
-#rdint : Dépenses de R&D internes (en interne)
-#rdext : Dépenses de R&D externes
-#ipnc : Innovation produit - Nouveaux composants [variable binaire]
-#ipnf : Innovation produit - Nouvelles fonctions [variable binaire]
-#ipnm : Innovation produit - Nouveaux matériaux [variable binaire]
-#ipr : Innovation de procédé [variable binaire]
-#patent : Nombre de brevets délivrés
+
 
 #-- Upload packages and data
 rm(list = ls())
@@ -28,7 +15,9 @@ library(corrplot)
 library(dplyr)
 options(scipen=999)
 
-df <- read.csv("/Users/istrati/Desktop/UNI/Master DS2E/Econométrie/TOKYO donnes.csv")
+
+#database available at : https://insideairbnb.com/get-the-data/
+df <- read.csv("listings.csv")
 head(df)
 
 #Clean the database
