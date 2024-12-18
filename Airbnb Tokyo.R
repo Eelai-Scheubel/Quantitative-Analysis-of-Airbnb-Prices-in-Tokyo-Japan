@@ -1,6 +1,8 @@
 #Upload packages and data
 library(ggplot2)
 library(dplyr)
+library(stringr)
+libeary(stargazer)
 
 df <- read.csv("C:/Users/scheu/Downloads/listings.csv")
 head(df)
@@ -53,9 +55,15 @@ for (i in 1:nrow(df)) {
   }
 }
 
+#création de variables binaires pour décrire la présence ou non de certains équipements/caractéristiques 
+df <- mutate(df,TV = ifelse(str_detect(amenities, "TV"), 1, 0))
+df <- mutate(df,View = ifelse(str_detect(amenities, "view"), 1, 0))
+df <- mutate(df,Self_check_in = ifelse(str_detect(amenities, "Self check-in"), 1, 0))
+
+
 db <- cbind(
   df[, c("id", "neighbourhood_cleansed", "price")],                      # Correctly reference the columns by name
-  df[, tail(names(df), 13)],                                             # Add the last 12 distance columns
+  df[, tail(names(df), 16)],                                             # Add the last 12 distance columns
   df[, c("room_type", "bedrooms", "review_scores_rating", 
          "minimum_nights", "availability_365")]                           # Correctly reference the additional columns
 )
@@ -92,52 +100,66 @@ options(scipen=999)
 summary(regression_model)
 
 
+#ols par quartier 
+#variables de controle : # of bedrooms, room_type (Hotel,Private,Shared), review score (sur 5), équipements (TV,self check-in, view)
+
 ###Shinjuku Ku### 
 #Tokyo Metropolitan Government Buildings / Shinjuku Golden Gai /
   
 db1 <- filter(db, neighbourhood_cleansed == "Shinjuku Ku")
-m1 <- lm(log(price)~distance_to_Shinjuku_Golden_Gai+distance_to_Tokyo_Metropolitan_Government_Buildings+bedrooms, data = db1)
+m1 <- lm(log(db1$price)~db1$distance_to_Shinjuku_Golden_Gai+db1$distance_to_Tokyo_Metropolitan_Government_Buildings+db1$bedrooms+db1$room_type+db1$review_scores_rating+db1$TV+db1$Self_check_in+db1$View)
+stargazer(m1,type = "text")
 
 ###Taito Ku###
 #Senso-ji Temple / Ueno Park / Tokyo National Museum
 
 db2 <- filter(db, neighbourhood_cleansed == "Taito Ku")
-m2 <- lm(log(db2$price)~db2$`distance_to_Senso-ji_Temple`+db2$distance_to_Ueno_Park+db2$distance_to_Tokyo_National_Museum+db2$bedrooms)
+m2 <- lm(log(db2$price)~db2$`distance_to_Senso-ji_Temple`+db2$distance_to_Ueno_Park+db2$distance_to_Tokyo_National_Museum+db2$bedrooms+db2$room_type+db2$review_scores_rating+db2$TV+db2$Self_check_in+db2$View)
+stargazer(m2,type = "text")
+
 
 ###Shibuya Ku###
 #Meiji Jingu Shrine / Shibuya Crossing
 
 db3 <- filter(db, neighbourhood_cleansed == "Shibuya Ku")
-m3 <- lm(log(db3$price)~db3$distance_to_Meiji_Jingu_Shrine+db3$bedrooms)
+m3 <- lm(log(db3$price)~db3$distance_to_Meiji_Jingu_Shrine+db3$bedrooms+db3$room_type+db3$review_scores_rating+db3$TV+db3$Self_check_in+db3$View)
+stargazer(m3,type = "text")
+
 
 ###Koto Ku###
 #teamLab Planets
 
 db4 <- filter(db, neighbourhood_cleansed == "Koto Ku")
-m4 <- lm(log(db4$price)~db4$distance_to_teamLab_Planets+db4$bedrooms)
+m4 <- lm(log(db4$price)~db4$distance_to_teamLab_Planets+db4$bedrooms+db4$room_type+db4$review_scores_rating+db4$TV+db4$Self_check_in+db4$View)
+stargazer(m4,type = "text")
+
 
 ###Sumida Ku###
 #Tokyo Skytree
 
 db5 <- filter(db, neighbourhood_cleansed == "Sumida Ku")
-m5 <- lm(log(db5$price)~db5$distance_to_Tokyo_Skytree+db5$bedrooms)
+m5 <- lm(log(db5$price)~db5$distance_to_Tokyo_Skytree+db5$bedrooms+db5$room_type+db5$review_scores_rating+db5$TV+db5$Self_check_in+db5$View)
+stargazer(m5,type = "text")
 
 
 ###Minato Ku###
 #Tokyo Tower
 
 db6 <- filter(db, neighbourhood_cleansed == "Minato Ku")
-m6 <- lm(log(db6$price)~db6$distance_to_Tokyo_Tower+db6$bedrooms)
+m6 <- lm(log(db6$price)~db6$distance_to_Tokyo_Tower+db6$bedrooms+db6$room_type+db6$review_scores_rating+db6$TV+db6$Self_check_in+db6$View)
+stargazer(m6,type = "text")
 
 ###Chuo Ku###
 #Ginza Station
 
 db7 <- filter(db, neighbourhood_cleansed == "Chuo Ku")
-m7 <- lm(log(db7$price)~db7$distance_to_Ginza_Station+db7$bedrooms)
+m7 <- lm(log(db7$price)~db7$distance_to_Ginza_Station+db7$bedrooms+db7$room_type+db7$review_scores_rating+db7$TV+db7$Self_check_in+db7$View)
+stargazer(m7,type = "text")
 
 ###Chiyoda Ku###
 #Akihabara Station 
 
 db8 <- filter(db, neighbourhood_cleansed == "Chiyoda Ku")
-m8 <- lm(log(db8$price)~db8$distance_to_Akihabara_Station+db8$bedrooms)
+m8 <- lm(log(db8$price)~db8$distance_to_Akihabara_Station+db8$bedrooms+db8$room_type+db8$review_scores_rating+db8$TV+db8$Self_check_in+db8$View)
+stargazer(m8,type = "text")
 
