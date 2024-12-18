@@ -55,33 +55,48 @@ for (i in 1:nrow(df)) {
 
 db <- cbind(
   df[, c("id", "neighbourhood_cleansed", "price")],                      # Correctly reference the columns by name
-  df[, tail(names(df), 12)],                                             # Add the last 12 distance columns
+  df[, tail(names(df), 13)],                                             # Add the last 12 distance columns
   df[, c("room_type", "bedrooms", "review_scores_rating", 
          "minimum_nights", "availability_365")]                           # Correctly reference the additional columns
 )
 
 
+#-----------------------------------------------------
+#------------------ DESCRIPTIVES ---------------------
+summary(db)
+
+library(stargazer)
+
+names(db)
+
+subset_db <- db[, c("price", "distance_to_Senso-ji_Temple", "distance_to_Meiji_Jingu_Shrine",
+                    "distance_to_teamLab_Planets", "distance_to_Tokyo_Skytree", "distance_to_Tokyo_Tower",
+                    "distance_to_Ueno_Park", "distance_to_Ginza_Station", "distance_to_Akihabara_Station",
+                    "distance_to_Shibuya_Crossing", "distance_to_Tokyo_National_Museum", 
+                    "distance_to_Tokyo_Metropolitan_Government_Buildings")]
+
+stargazer(subset_db, 
+          type = "text", 
+          title = "Table: Descriptive statistics of some variables")
 
 # Créer un modèle de régression linéaire entre price et les 10 dernières colonnes
 log_ols <- lm(log(price) ~ ., data = db[, c(3:15)])
 summary(log_ols)
 
-ols <- lm(price ~ ., data = db[, c(3:15)])
-summary(ols)
+#Tester la multicolinéarité
+alias(log_ols)
+# Tokyo National Museum parfaitement multicollinéaire
 
 options(scipen=999)
 # Résumé du modèle de régression
 summary(regression_model)
 
 
-////////////////
-#ols par quartier 
-///////////////
 ###Shinjuku Ku### 
 #Tokyo Metropolitan Government Buildings / Shinjuku Golden Gai /
   
 db1 <- filter(db, neighbourhood_cleansed == "Shinjuku Ku")
-m1 <- lm(log(db1$price)~db1$distance_to_Shinjuku_Golden_Gai+db1$distance_to_Tokyo_Metropolitan_Government_Buildings+db1$bedrooms)
+m1 <- lm(log(price)~distance_to_Shinjuku_Golden_Gai+distance_to_Tokyo_Metropolitan_Government_Buildings+bedrooms, data = db1)
 
 ###Taito Ku###
 #Senso-ji Temple / Ueno Park / Tokyo National Museum
