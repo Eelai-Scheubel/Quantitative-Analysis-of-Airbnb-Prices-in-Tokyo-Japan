@@ -98,10 +98,11 @@ df <- mutate(df,Self_check_in = ifelse(str_detect(amenities, "Self check-in"), 1
 
 # Cleaned database
 db <- cbind(
-  df[, c("price")],                  	# Correctly reference the columns by name
-  df[, tail(names(df), 15)],         	# Add the last 13 distance columns
-  df[, c("bedrooms", "review_scores_rating", "minimum_nights")]                       	# Correctly reference the additional columns
+  price = df[["price"]],
+  df[, tail(names(df), 15)],
+  df[, c("bedrooms", "review_scores_rating", "minimum_nights")]
 )
+
 
 
 # Check for NA in the database
@@ -124,8 +125,8 @@ stargazer(db,
 corr.matrix <- round(cor(db), 2)
 
 # Simple linear regression
-  ols <- lm(price ~ ., data = db[, c(3:21)]) #OLS
-log_ols <- lm(log(price) ~ ., data = db[, c(3:21)] #OLS with semi elasticity
+ols <- lm(price ~ ., data = db)
+log_ols <- lm(log(price) ~ ., data = db)
               stargazer(ols, log_ols, type = "text", align = TRUE) # Comparison
               
 # Test for multicollinearity
