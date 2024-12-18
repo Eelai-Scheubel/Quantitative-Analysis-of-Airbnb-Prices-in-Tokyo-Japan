@@ -62,16 +62,10 @@ db <- cbind(
 
 
 # Créer un modèle de régression linéaire entre price et les 10 dernières colonnes
-regression_model <- lm(log(price) ~ ., data = cleaned_data[, c("price", distance_columns)])
+log_ols <- lm(log(price) ~ ., data = db[, c(3:15)])
+summary(log_ols)
 
-
-ward <-  cleaned_data[cleaned_data$neighbourhood_cleansed == "Sumida Ku", ]
-
-# Sélectionner les 10 dernières colonnes
-distance_columns <- tail(names(ward), 10)
-
-ols <- lm(ward$price~ward$distance_to_Tokyo_Skytree)
-
+ols <- lm(price ~ ., data = db[, c(3:15)])
 summary(ols)
 
 options(scipen=999)
