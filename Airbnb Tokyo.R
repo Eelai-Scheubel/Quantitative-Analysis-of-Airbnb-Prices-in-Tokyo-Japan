@@ -114,9 +114,10 @@ stargazer(db,
 corr.matrix <- round(cor(db[,3:21]), 2)
 
 # Simple linear regression
-ols <- lm(price ~ ., data = db)
-log_ols <- lm(log(price) ~ ., data = db)
-              stargazer(ols, log_ols, type = "text", align = TRUE) # Comparison
+# Simple linear regression
+ols <- lm(price ~ ., data = db[,3:21])
+log_ols <- lm(log(price) ~ ., data = db[,3:21])
+stargazer(ols, log_ols, type = "text", align = TRUE) # Comparison
               
 # Test for multicollinearity
 alias(log_ols)
