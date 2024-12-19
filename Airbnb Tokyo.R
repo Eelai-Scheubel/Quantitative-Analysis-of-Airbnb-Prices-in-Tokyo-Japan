@@ -54,17 +54,6 @@ haversine_distance <- function(lat1, lon1, lat2, lon2, R = 6371) {
   return(d)
 }
 
-# Create at dataframe for every important touristic spot in Tokyo
-name <- c("Shinjuku Golden Gai", "Senso-ji Temple", "Meiji Jingu Shrine", "teamLab Planets",
-          "Tokyo Skytree", "Tokyo Tower", "Ueno Park", "Ginza Station", "Akihabara Station",
-          "Shibuya Crossing", "Tokyo National Museum", "Tokyo Metropolitan Government Buildings") #vector for the names
-latitude <- c(35.4138, 35.4252, 35.4034, 35.6485, 35.4236, 35.3931, 35.4244, 35.4016,
-              35.4154, 35.3934, 35.4308, 35.4123) #vector for the latitude
-longitude <- c(139.4217, 139.4748, 139.4157, 139.7899, 139.4839, 139.4444, 139.4616,
-               139.4554, 139.4623, 139.4202, 139.4633, 139.4132) #vector for the longitude
-
-tourist <- data.frame(name, latitude, longitude) #combined vectors
-
 # Calculer les distances pour chaque appartement et chaque site touristique
 for (i in 1:nrow(df)) {
   for (j in 1:nrow(tourist)) {
